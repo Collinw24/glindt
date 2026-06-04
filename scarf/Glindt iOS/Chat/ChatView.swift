@@ -674,6 +674,7 @@ final class ChatController {
     var attachments: [ChatImageAttachment] = []
 
     let context: ServerContext
+    private let appConfig: GlindtAppConfig
     private let apiConfig: APIServerConfig
     private var client: ACPClient?
     private var eventTask: Task<Void, Never>?
@@ -750,6 +751,7 @@ final class ChatController {
     }
 
     init(config: GlindtAppConfig, context: ServerContext) {
+        self.appConfig = config
         self.apiConfig = config.apiConfig
         self.context = context
         self.vm = RichChatViewModel(context: context)
@@ -770,9 +772,9 @@ final class ChatController {
         vm.reset()
 
         let client: ACPClient
-        if let sshConfig = config.sshConfig, let keyPEM = config.sshPrivateKeyPEM {
+        if let sshConfig = appConfig.sshConfig, let keyPEM = appConfig.sshPrivateKeyPEM {
             let bundle = SSHKeyBundle(privateKeyPEM: keyPEM, publicKeySSHLine: "")
-            let sshCtx = ServerContext(id: context.id, displayName: config.displayName, kind: .ssh(sshConfig))
+            let sshCtx = ServerContext(id: context.id, displayName: appConfig.displayName, kind: .ssh(sshConfig))
             client = ACPClient.forGlindt(
                 context: sshCtx,
                 sshConfig: sshConfig,
@@ -801,7 +803,7 @@ final class ChatController {
         startHealthMonitor(client: client)
 
         do {
-            let home = config.serverURL
+            let home = appConfig.serverURL
             let sessionId = try await client.newSession(cwd: home)
             vm.setSessionId(sessionId)
             loadDraft()
@@ -1033,15 +1035,15 @@ final class ChatController {
                 }
 
                 let client: ACPClient
-                if let sshConfig = config.sshConfig, let keyPEM = config.sshPrivateKeyPEM {
+                if let sshConfig = appConfig.sshConfig, let keyPEM = appConfig.sshPrivateKeyPEM {
                     let bundle = SSHKeyBundle(privateKeyPEM: keyPEM, publicKeySSHLine: "")
-                    let sshCtx = ServerContext(id: context.id, displayName: config.displayName, kind: .ssh(sshConfig))
+                    let sshCtx = ServerContext(id: context.id, displayName: appConfig.displayName, kind: .ssh(sshConfig))
                     client = ACPClient.forGlindt(context: sshCtx, sshConfig: sshConfig, keyProvider: { bundle })
                 } else { continue }
 
                 do {
                     try await client.start()
-                    let cwd = config.serverURL
+                    let cwd = appConfig.serverURL
                     let resolvedSessionId: String
                     do {
                         resolvedSessionId = try await client.resumeSession(cwd: cwd, sessionId: sessionId)
@@ -1090,4 +1092,333 @@ private struct PermissionWrapper: Identifiable {
     var id: Int { value.requestId }
 }
 
-#endif // SQLite3
+// MARK: - Message bubble
+
+private struct MessageBubble: View, Equatable {
+    let message: HermesMessage
+    var turnDuration: TimeInterval? = nil
+
+    static func == (lhs: MessageBubble, rhs: MessageBubble) -> Bool {
+        guard lhs.message.id == rhs.message.id else { return false }
+        if lhs.message.id == 0 {
+            return lhs.message.content == rhs.message.content
+                && lhs.message.reasoning == rhs.message.reasoning
+                && lhs.message.reasoningContent == rhs.message.reasoningContent
+                && lhs.message.toolCalls.count == rhs.message.toolCalls.count
+                && lhs.turnDuration == rhs.turnDuration
+        }
+        return lhs.turnDuration == rhs.turnDuration
+            && lhs.message.tokenCount == rhs.message.tokenCount
+            && lhs.message.finishReason == rhs.message.finishReason
+    }
+
+    var body: some View {
+        let _: Void = GlindtMon.event(.chatRender, "ios.MessageBubble.body")
+        if message.isToolResult {
+            ToolResultRow(message: message)
+        } else {
+            HStack(alignment: .bottom) {
+                if message.isUser { Spacer(minLength: 40) }
+                VStack(alignment: message.isUser ? .trailing : .leading, spacing: 4) {
+                    if message.hasReasoning, let r = message.preferredReasoning, !r.isEmpty {
+                        ReasoningDisclosure(reasoning: r)
+                    }
+                    if message.isUser || !message.content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                        bubbleContent
+                    }
+                    if !message.toolCalls.isEmpty {
+                        VStack(alignment: .leading, spacing: 6) {
+                            ForEach(message.toolCalls) { call in
+                                ToolCallCard(call: call)
+                            }
+                        }
+                    }
+                    if !message.isUser, let seconds = turnDuration {
+                        Text(RichChatViewModel.formatTurnDuration(seconds))
+                            .font(.caption2)
+                            .foregroundStyle(.tertiary)
+                    }
+                }
+                if !message.isUser { Spacer(minLength: 40) }
+            }
+            .padding(.horizontal)
+        }
+    }
+
+    @ViewBuilder
+    private var bubbleContent: some View {
+        if message.isUser {
+            Text(message.content)
+                .font(.body)
+                .padding(.horizontal, 14)
+                .padding(.vertical, 10)
+                .foregroundStyle(GlindtColor.onAccent)
+                .background(
+                    UnevenRoundedRectangle(cornerRadii:
+                        .init(topLeading: 14, bottomLeading: 14, bottomTrailing: 4, topTrailing: 14))
+                        .fill(GlindtColor.accent)
+                )
+                .textSelection(.enabled)
+                .contextMenu { messageContextMenu }
+        } else {
+            HStack(alignment: .top, spacing: 8) {
+                RoundedRectangle(cornerRadius: 7, style: .continuous)
+                    .fill(GlindtGradient.brand)
+                    .frame(width: 24, height: 24)
+                    .overlay(
+                        Image(systemName: "sparkles")
+                            .foregroundStyle(.white)
+                            .font(.system(size: 10, weight: .semibold))
+                    )
+                VStack(alignment: .leading, spacing: 8) {
+                    ForEach(Array(ChatContentFormatter.segments(for: message.content).enumerated()), id: \.offset) { _, segment in
+                        switch segment {
+                        case .text(let body):
+                            markdownText(body)
+                                .font(.body)
+                                .textSelection(.enabled)
+                        case .code(let lang, let body):
+                            CodeBlockView(language: lang, body: body)
+                        }
+                    }
+                }
+                .padding(.horizontal, 12)
+                .padding(.vertical, 10)
+                .foregroundStyle(GlindtColor.foregroundPrimary)
+                .background(
+                    RoundedRectangle(cornerRadius: GlindtRadius.xl, style: .continuous)
+                        .fill(GlindtColor.backgroundSecondary)
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: GlindtRadius.xl, style: .continuous)
+                        .strokeBorder(GlindtColor.border, lineWidth: 1)
+                )
+                .contextMenu { messageContextMenu }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var messageContextMenu: some View {
+        Button {
+            UIPasteboard.general.string = message.content
+        } label: {
+            Label("Copy", systemImage: "doc.on.doc")
+        }
+        ShareLink(item: message.content) {
+            Label("Share", systemImage: "square.and.arrow.up")
+        }
+    }
+
+    private func markdownText(_ body: String) -> Text {
+        if let attributed = try? AttributedString(
+            markdown: body,
+            options: AttributedString.MarkdownParsingOptions(
+                interpretedSyntax: .inlineOnlyPreservingWhitespace
+            )
+        ) { return Text(attributed) }
+        return Text(body)
+    }
+}
+
+private struct CodeBlockView: View {
+    let language: String?
+    let code: String
+    @State private var expanded = false
+
+    init(language: String?, body: String) {
+        self.language = language
+        self.code = body
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            HStack(spacing: 6) {
+                if let lang = language, !lang.isEmpty {
+                    Text(lang.uppercased())
+                        .font(.caption2.monospaced())
+                        .foregroundStyle(GlindtColor.foregroundMuted)
+                }
+                Spacer()
+                Button(expanded ? "Collapse" : "Expand") {
+                    withAnimation(.easeInOut(duration: 0.15)) { expanded.toggle() }
+                }
+                .font(.caption2)
+                .buttonStyle(.plain)
+                .foregroundStyle(.tint)
+                Button {
+                    UIPasteboard.general.string = code
+                } label: {
+                    Image(systemName: "doc.on.doc").font(.caption2)
+                }
+                .buttonStyle(.plain)
+                .foregroundStyle(GlindtColor.foregroundMuted)
+            }
+            ScrollView(.horizontal, showsIndicators: true) {
+                Text(code)
+                    .font(.footnote.monospaced())
+                    .textSelection(.enabled)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 6)
+                    .fixedSize(horizontal: true, vertical: false)
+            }
+            .frame(maxHeight: expanded ? nil : 240)
+            .background(Color(.tertiarySystemBackground))
+            .clipShape(RoundedRectangle(cornerRadius: 8))
+        }
+    }
+}
+
+private struct ReasoningDisclosure: View {
+    let reasoning: String
+    @State private var isExpanded = false
+
+    var body: some View {
+        DisclosureGroup(isExpanded: $isExpanded) {
+            Text(reasoning)
+                .font(.caption)
+                .foregroundStyle(GlindtColor.foregroundMuted)
+                .italic()
+                .textSelection(.enabled)
+                .padding(.top, 4)
+        } label: {
+            HStack(spacing: 5) {
+                Image(systemName: "brain").font(.caption)
+                Text("REASONING").font(.caption2).fontWeight(.semibold).tracking(0.5)
+            }
+            .foregroundStyle(GlindtColor.warning)
+        }
+        .padding(.horizontal, 10)
+        .padding(.vertical, 6)
+        .background(
+            RoundedRectangle(cornerRadius: 7)
+                .fill(GlindtColor.warning.opacity(0.10))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 7)
+                        .strokeBorder(GlindtColor.warning.opacity(0.30), lineWidth: 1)
+                )
+        )
+    }
+}
+
+private struct ToolCallCard: View {
+    let call: HermesToolCall
+    @State private var isExpanded = false
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Button {
+                withAnimation(.easeInOut(duration: 0.15)) { isExpanded.toggle() }
+            } label: {
+                HStack(spacing: 8) {
+                    HStack(spacing: 4) {
+                        Image(systemName: call.toolKind.icon).foregroundStyle(toolColor).font(.caption2)
+                        Text(toolLabel).font(.caption2).fontWeight(.semibold).tracking(0.4).foregroundStyle(toolColor)
+                    }
+                    Text(call.functionName).font(.caption.monospaced()).fontWeight(.semibold).foregroundStyle(GlindtColor.foregroundPrimary)
+                    Text(call.argumentsSummary.prefix(60)).font(.caption.monospaced()).foregroundStyle(GlindtColor.foregroundMuted).lineLimit(1).truncationMode(.middle)
+                    Spacer(minLength: 4)
+                    Image(systemName: isExpanded ? "chevron.up" : "chevron.down").font(.caption2).foregroundStyle(GlindtColor.foregroundFaint)
+                }
+                .padding(.horizontal, 10).padding(.vertical, 6)
+                .background(RoundedRectangle(cornerRadius: 7).fill(toolColor.opacity(0.10)).overlay(RoundedRectangle(cornerRadius: 7).strokeBorder(toolColor.opacity(0.30), lineWidth: 1)))
+            }
+            .buttonStyle(.plain)
+            if isExpanded {
+                Text(call.arguments)
+                    .font(.caption2.monospaced()).foregroundStyle(GlindtColor.foregroundPrimary).textSelection(.enabled)
+                    .padding(8).frame(maxWidth: .infinity, alignment: .leading)
+                    .background(RoundedRectangle(cornerRadius: 7).fill(GlindtColor.backgroundSecondary).overlay(RoundedRectangle(cornerRadius: 7).strokeBorder(GlindtColor.border, lineWidth: 1)))
+                    .padding(.leading, 4)
+            }
+        }
+    }
+
+    private var toolLabel: String {
+        switch call.toolKind {
+        case .read: return "READ"; case .edit: return "EDIT"; case .execute: return "EXECUTE"
+        case .fetch: return "FETCH"; case .browser: return "BROWSER"; case .other: return "TOOL"
+        }
+    }
+
+    private var toolColor: Color {
+        switch call.toolKind {
+        case .read: return GlindtColor.success; case .edit: return GlindtColor.info
+        case .execute: return GlindtColor.warning; case .fetch: return GlindtColor.Tool.web
+        case .browser: return GlindtColor.Tool.search; case .other: return GlindtColor.foregroundMuted
+        }
+    }
+}
+
+private struct ToolResultRow: View {
+    let message: HermesMessage
+    @State private var isExpanded = false
+
+    var body: some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 4) {
+                Button {
+                    withAnimation(.easeInOut(duration: 0.15)) { isExpanded.toggle() }
+                } label: {
+                    HStack(spacing: 6) {
+                        Image(systemName: "arrow.turn.down.right").font(.caption2).foregroundStyle(GlindtColor.foregroundMuted)
+                        Text("Tool output").font(.caption).foregroundStyle(GlindtColor.foregroundMuted)
+                        Text(message.content.prefix(80)).font(.caption2).foregroundStyle(.tertiary).lineLimit(1)
+                        Spacer()
+                        Image(systemName: isExpanded ? "chevron.up" : "chevron.down").font(.caption2).foregroundStyle(.tertiary)
+                    }
+                }
+                .buttonStyle(.plain)
+                if isExpanded {
+                    Text(message.content).font(.caption2.monospaced()).foregroundStyle(GlindtColor.foregroundMuted).textSelection(.enabled).padding(.top, 2)
+                }
+            }
+            .padding(8).background(RoundedRectangle(cornerRadius: 8).fill(Color(.tertiarySystemBackground)))
+            Spacer(minLength: 40)
+        }
+        .padding(.horizontal)
+    }
+}
+
+private struct PermissionSheet: View {
+    let permission: RichChatViewModel.PendingPermission
+    let onRespond: (_ optionId: String) async -> Void
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        NavigationStack {
+            List {
+                Section {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text(permission.title).font(.headline).textSelection(.enabled)
+                        Text("Kind: \(permission.kind)").font(.caption).foregroundStyle(GlindtColor.foregroundMuted)
+                    }
+                    .padding(.vertical, 4)
+                }
+                Section("Your response") {
+                    ForEach(Array(permission.options.enumerated()), id: \.element.optionId) { idx, opt in
+                        Button {
+                            Task {
+                                await onRespond(opt.optionId)
+                                dismiss()
+                            }
+                        } label: {
+                            HStack {
+                                if idx < 9 {
+                                    Text("\(idx + 1).").font(.body.monospaced()).foregroundStyle(GlindtColor.foregroundMuted)
+                                }
+                                Text(opt.name)
+                                Spacer()
+                                Image(systemName: "chevron.right").font(.caption).foregroundStyle(.tertiary)
+                            }
+                        }
+                    }
+                }
+            }
+            .navigationTitle("Agent permission")
+            .navigationBarTitleDisplayMode(.inline)
+        }
+    }
+}
+
+#endif // canImport(SQLite3)

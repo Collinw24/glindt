@@ -105,9 +105,19 @@ public actor HermesDataService {
         public let sessionCount: Int
         public let totalTokens: Int
         public let totalCost: Double
-        public static let empty = SessionStats(sessionCount: 0, totalTokens: 0, totalCost: 0)
-        public init(sessionCount: Int, totalTokens: Int, totalCost: Double) {
+        public let totalSessions: Int
+        public let totalInputTokens: Int
+        public let totalOutputTokens: Int
+        public let totalToolCalls: Int
+        public static let empty = SessionStats(
+            sessionCount: 0, totalTokens: 0, totalCost: 0,
+            totalSessions: 0, totalInputTokens: 0, totalOutputTokens: 0, totalToolCalls: 0
+        )
+        public init(sessionCount: Int, totalTokens: Int, totalCost: Double,
+                    totalSessions: Int, totalInputTokens: Int, totalOutputTokens: Int, totalToolCalls: Int) {
             self.sessionCount = sessionCount; self.totalTokens = totalTokens; self.totalCost = totalCost
+            self.totalSessions = totalSessions; self.totalInputTokens = totalInputTokens; self.totalOutputTokens = totalOutputTokens
+            self.totalToolCalls = totalToolCalls
         }
     }
 
