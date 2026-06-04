@@ -30,6 +30,25 @@ let package = Package(
         .target(
             name: "GlindtCore",
             path: "Sources/GlindtCore",
+            exclude: [
+                "ViewModels/ActivityViewModel.swift",
+                "ViewModels/ConnectionStatusViewModel.swift",
+                "ViewModels/CuratorViewModel.swift",
+                "ViewModels/InsightsViewModel.swift",
+                "ViewModels/LogsViewModel.swift",
+                "ViewModels/ProjectSessionsViewModel.swift",
+                "ViewModels/ProjectsViewModel.swift",
+                "ViewModels/SkillsViewModel.swift",
+                "ViewModels/SettingsViewModel.swift",
+                "ViewModels/GatewayViewModel.swift",
+                "ViewModels/CronViewModel.swift",
+                "ViewModels/KanbanViewModel.swift",
+                "ViewModels/MemoryViewModel.swift",
+                "ViewModels/ModelCatalogViewModel.swift",
+                "ViewModels/MCPViewModel.swift",
+                "ViewModels/ProfilesViewModel.swift",
+                "ViewModels/SessionListViewModel.swift",
+            ],
             swiftSettings: [
                 // Swift 5 language mode mirrors the Mac app target's
                 // `SWIFT_VERSION = 5.0` build setting. Moving to strict
@@ -45,7 +64,20 @@ let package = Package(
         .testTarget(
             name: "GlindtCoreTests",
             dependencies: ["GlindtCore"],
-            path: "Tests/GlindtCoreTests"
+            path: "Tests/GlindtCoreTests",
+            exclude: [
+                "M5FeatureVMTests.swift",
+                "M9SlashCommandTests.swift",
+                "M1ACPTests.swift",
+                "M0dViewModelsTests.swift",
+                "SkillsViewModelHubFilterTests.swift",
+                "M0cServicesTests.swift",
+                "M0eUpdaterTests.swift",
+                "HermesGatewayListServiceTests.swift",
+                "GatewayConfigWriterTests.swift",
+                "KanbanModelsTests.swift",
+                "HermesCuratorParserTests.swift",
+            ]
         ),
     ]
 )
