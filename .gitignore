@@ -1,0 +1,20 @@
+# Xcode
+*.xcuserstate
+*.xcworkspace/xcuserdata/
+*.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+DerivedData/
+
+# Swift Package Manager
+.build/
+.swiftpm/
+
+# macOS
+.DS_Store
+Thumbs.db
+
+# Archives
+*.xcarchive
+
+# Release binaries
+releases/*.zip
+releases/*/*.zip
