@@ -52,9 +52,7 @@
 		4EAC23392F99930100654F42 /* Glindt iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Glindt iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4EAC23432F99930100654F42 /* Glindt iOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Glindt iOSUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		534959402F7B83B600BD31AD /* glindt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = glindt.app; sourceTree = BUILT_PRODUCTS_DIR; };
-
 		5349594F2F7B83B700BD31AD /* glindtTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = glindtTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-
 		534959592F7B83B700BD31AD /* glindtUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = glindtUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -65,13 +63,6 @@
 				Info.plist,
 			);
 			target = 4EAC23282F99930000654F42 /* glindt mobile */;
-		};
-		534959AA2F7B83B600BD31AD /* Exceptions for "glindt" folder in "glindt" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = 5349593F2F7B83B600BD31AD /* glindt */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -96,9 +87,6 @@
 		};
 		534959422F7B83B600BD31AD /* glindt */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				534959AA2F7B83B600BD31AD /* Exceptions for "glindt" folder in "glindt" target */,
-			);
 			path = glindt;
 			sourceTree = "<group>";
 		};
@@ -285,8 +273,8 @@
 			name = glindt;
 			packageProductDependencies = (
 				53SWIFTTERM0001 /* SwiftTerm */,
-                    53SCARFCORE0001 /* GlindtCore */,
-                    53SCARFDESIGN0001 /* GlindtDesign */,
+				53SCARFCORE0001 /* GlindtCore */,
+				53SCARFDESIGN0001 /* GlindtDesign */,
 				53SPARKLE00011 /* Sparkle */,
 			);
 			productName = glindt;
@@ -390,9 +378,9 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				53SWIFTTERM0002 /* XCRemoteSwiftPackageReference "SwiftTerm" */,
-			53SCARFCORE0020 /* XCLocalSwiftPackageReference "Packages/GlindtCore" */,
-			53SCARFDESIGN0020 /* XCLocalSwiftPackageReference "Packages/GlindtDesign" */,
-			53SCARFIOS0020 /* XCLocalSwiftPackageReference "Packages/GlindtIOS" */,
+				53SCARFCORE0020 /* XCLocalSwiftPackageReference "Packages/GlindtCore" */,
+				53SCARFDESIGN0020 /* XCLocalSwiftPackageReference "Packages/GlindtDesign" */,
+				53SCARFIOS0020 /* XCLocalSwiftPackageReference "Packages/GlindtIOS" */,
 				53SPARKLE00012 /* XCRemoteSwiftPackageReference "Sparkle" */,
 			);
 			preferredProjectObjectVersion = 77;
@@ -536,20 +524,20 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Glindt iOS/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = GlindtGo;
+				INFOPLIST_KEY_CFBundleDisplayName = Glindt;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.10.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.glindtgo.app;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.glindt.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -578,20 +566,20 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Glindt iOS/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = GlindtGo;
+				INFOPLIST_KEY_CFBundleDisplayName = Glindt;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.10.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.glindtgo.app;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.glindt.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -617,7 +605,7 @@
 				CURRENT_PROJECT_VERSION = 39;
 				DEVELOPMENT_TEAM = 3Q6X2L86C4;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "alanwizemann.Glindt-iOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -640,7 +628,7 @@
 				CURRENT_PROJECT_VERSION = 39;
 				DEVELOPMENT_TEAM = 3Q6X2L86C4;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "alanwizemann.Glindt-iOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -663,7 +651,7 @@
 				CURRENT_PROJECT_VERSION = 39;
 				DEVELOPMENT_TEAM = 3Q6X2L86C4;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "alanwizemann.Glindt-iOSUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -685,7 +673,7 @@
 				CURRENT_PROJECT_VERSION = 39;
 				DEVELOPMENT_TEAM = 3Q6X2L86C4;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "alanwizemann.Glindt-iOSUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -756,13 +744,14 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 26.2;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = macosx;
+				SDKROOT = iphoneos;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -817,41 +806,42 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 26.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				SDKROOT = macosx;
+				SDKROOT = iphoneos;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SWIFT_COMPILATION_MODE = wholemodule;
 			};
 			name = Release;
 		};
-			534959642F7B83B700BD31AD /* Debug */ = {
-				isa = XCBuildConfiguration;
-				buildSettings = {
-					ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-					ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-					ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
-					CODE_SIGN_ENTITLEMENTS = glindt/glindt.entitlements;
-					CODE_SIGN_STYLE = Automatic;
-					COMBINE_HIDPI_IMAGES = YES;
-					CURRENT_PROJECT_VERSION = 39;
-					DEAD_CODE_STRIPPING = YES;
-					DEVELOPMENT_TEAM = 3Q6X2L86C4;
-					ENABLE_APP_SANDBOX = NO;
-					ENABLE_HARDENED_RUNTIME = YES;
-					ENABLE_PREVIEWS = YES;
-					GENERATE_INFOPLIST_FILE = NO;
-					INFOPLIST_FILE = glindt/Info.plist;
-					INFOPLIST_KEY_CFBundleDisplayName = Glindt;
-					LD_RUNPATH_SEARCH_PATHS = (
-						"$(inherited)",
-						"@executable_path/../Frameworks",
-					);
-					MACOSX_DEPLOYMENT_TARGET = 14.6;
-					MARKETING_VERSION = 2.10.0;
-					PRODUCT_BUNDLE_IDENTIFIER = com.glindt.app;
+		534959642F7B83B700BD31AD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_ENTITLEMENTS = glindt/glindt.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 39;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = 3Q6X2L86C4;
+				ENABLE_APP_SANDBOX = NO;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = glindt/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Glindt;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.6;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.glindt.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -863,31 +853,31 @@
 			};
 			name = Debug;
 		};
-			534959652F7B83B700BD31AD /* Release */ = {
-				isa = XCBuildConfiguration;
-				buildSettings = {
-					ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-					ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-					ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
-					CODE_SIGN_ENTITLEMENTS = glindt/glindt.entitlements;
-					CODE_SIGN_STYLE = Automatic;
-					COMBINE_HIDPI_IMAGES = YES;
-					CURRENT_PROJECT_VERSION = 39;
-					DEAD_CODE_STRIPPING = YES;
-					DEVELOPMENT_TEAM = 3Q6X2L86C4;
-					ENABLE_APP_SANDBOX = NO;
-					ENABLE_HARDENED_RUNTIME = YES;
-					ENABLE_PREVIEWS = YES;
-					GENERATE_INFOPLIST_FILE = NO;
-					INFOPLIST_FILE = glindt/Info.plist;
-					INFOPLIST_KEY_CFBundleDisplayName = Glindt;
-					LD_RUNPATH_SEARCH_PATHS = (
-						"$(inherited)",
-						"@executable_path/../Frameworks",
-					);
-					MACOSX_DEPLOYMENT_TARGET = 14.6;
-					MARKETING_VERSION = 2.10.0;
-					PRODUCT_BUNDLE_IDENTIFIER = com.glindt.app;
+		534959652F7B83B700BD31AD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_ENTITLEMENTS = glindt/glindt.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 39;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = 3Q6X2L86C4;
+				ENABLE_APP_SANDBOX = NO;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = glindt/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Glindt;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.6;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.glindt.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -909,7 +899,7 @@
 				DEVELOPMENT_TEAM = 3Q6X2L86C4;
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 26.2;
-				MARKETING_VERSION = 2.10.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.glindtTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
@@ -931,7 +921,7 @@
 				DEVELOPMENT_TEAM = 3Q6X2L86C4;
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 26.2;
-				MARKETING_VERSION = 2.10.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.glindtTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
@@ -951,7 +941,7 @@
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 3Q6X2L86C4;
 				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 2.10.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.glindtUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
@@ -971,7 +961,7 @@
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 3Q6X2L86C4;
 				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 2.10.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.glindtUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
@@ -1053,17 +1043,17 @@
 
 /* Begin XCLocalSwiftPackageReference section */
 		53SCARFCORE0020 /* XCLocalSwiftPackageReference "Packages/GlindtCore" */ = {
-		isa = XCLocalSwiftPackageReference;
-		relativePath = Packages/GlindtCore;
-	};
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/GlindtCore;
+		};
 		53SCARFDESIGN0020 /* XCLocalSwiftPackageReference "Packages/GlindtDesign" */ = {
-		isa = XCLocalSwiftPackageReference;
-		relativePath = Packages/GlindtDesign;
-	};
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/GlindtDesign;
+		};
 		53SCARFIOS0020 /* XCLocalSwiftPackageReference "Packages/GlindtIOS" */ = {
-		isa = XCLocalSwiftPackageReference;
-		relativePath = Packages/GlindtIOS;
-	};
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/GlindtIOS;
+		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
@@ -1087,25 +1077,25 @@
 
 /* Begin XCSwiftPackageProductDependency section */
 		53SCARFCORE0001 /* GlindtCore */ = {
-		isa = XCSwiftPackageProductDependency;
-		productName = GlindtCore;
-	};
+			isa = XCSwiftPackageProductDependency;
+			productName = GlindtCore;
+		};
 		53SCARFCORE0002 /* GlindtCore */ = {
-		isa = XCSwiftPackageProductDependency;
-		productName = GlindtCore;
-	};
+			isa = XCSwiftPackageProductDependency;
+			productName = GlindtCore;
+		};
 		53SCARFDESIGN0001 /* GlindtDesign */ = {
-		isa = XCSwiftPackageProductDependency;
-		productName = GlindtDesign;
-	};
+			isa = XCSwiftPackageProductDependency;
+			productName = GlindtDesign;
+		};
 		53SCARFDESIGN0002 /* GlindtDesign */ = {
-		isa = XCSwiftPackageProductDependency;
-		productName = GlindtDesign;
-	};
+			isa = XCSwiftPackageProductDependency;
+			productName = GlindtDesign;
+		};
 		53SCARFIOS0001 /* GlindtIOS */ = {
-		isa = XCSwiftPackageProductDependency;
-		productName = GlindtIOS;
-	};
+			isa = XCSwiftPackageProductDependency;
+			productName = GlindtIOS;
+		};
 		53SPARKLE00011 /* Sparkle */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 53SPARKLE00012 /* XCRemoteSwiftPackageReference "Sparkle" */;

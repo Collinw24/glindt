@@ -32,6 +32,10 @@ public struct GlindtAppConfig: Sendable, Identifiable {
         guard let ssh = sshConfig else { return nil }
         return ServerContext(id: id, displayName: displayName, kind: .ssh(ssh))
     }
+
+    public func toServerContext(id: ServerID) -> ServerContext {
+        ServerContext(id: id, displayName: displayName, kind: .api(apiConfig))
+    }
 }
 
 extension GlindtAppConfig: Hashable {
@@ -140,3 +144,5 @@ private final class KeychainTokenStore {
         SecItemDelete(query as CFDictionary)
     }
 }
+
+public typealias IOSServerConfig = GlindtAppConfig

@@ -17,6 +17,9 @@ public struct ProjectDashboardService {
     public init(context: ServerContext) {}
     public func loadRegistry() -> ProjectRegistry { ProjectRegistry(projects: []) }
     public func saveRegistry(_ registry: ProjectRegistry) {}
+    public func dashboardExists(for project: ProjectEntry) -> Bool { false }
+    public func dashboardModificationDate(for project: ProjectEntry) -> Date? { nil }
+    public func loadDashboard(for project: ProjectEntry) -> ProjectDashboard? { nil }
 }
 
 public struct SessionAttributionService {

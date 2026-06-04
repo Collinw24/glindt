@@ -15,9 +15,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "5349593F2F7B83B600BD31AD"
-               BuildableName = "glindt.app"
-               BlueprintName = "glindt"
+               BlueprintIdentifier = "4EAC23282F99930000654F42"
+               BuildableName = "glindt mobile.app"
+               BlueprintName = "glindt mobile"
                ReferencedContainer = "container:glindt.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -34,19 +34,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "5349594E2F7B83B700BD31AD"
-               BuildableName = "glindtTests.xctest"
-               BlueprintName = "glindtTests"
-               ReferencedContainer = "container:glindt.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "534959582F7B83B700BD31AD"
-               BuildableName = "glindtUITests.xctest"
-               BlueprintName = "glindtUITests"
+               BlueprintIdentifier = "4EAC23382F99930100654F42"
+               BuildableName = "Glindt iOSTests.xctest"
+               BlueprintName = "Glindt iOSTests"
                ReferencedContainer = "container:glindt.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -66,9 +56,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "5349593F2F7B83B600BD31AD"
-            BuildableName = "glindt.app"
-            BlueprintName = "glindt"
+            BlueprintIdentifier = "4EAC23282F99930000654F42"
+            BuildableName = "glindt mobile.app"
+            BlueprintName = "glindt mobile"
             ReferencedContainer = "container:glindt.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -83,9 +73,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "5349593F2F7B83B600BD31AD"
-            BuildableName = "glindt.app"
-            BlueprintName = "glindt"
+            BlueprintIdentifier = "4EAC23282F99930000654F42"
+            BuildableName = "glindt mobile.app"
+            BlueprintName = "glindt mobile"
             ReferencedContainer = "container:glindt.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

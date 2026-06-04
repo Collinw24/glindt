@@ -4,6 +4,7 @@ import Foundation
 import Citadel
 import CryptoKit
 import GlindtCore
+import GlindtIOS
 
 public extension ACPClient {
     static func forGlindt(
@@ -17,7 +18,7 @@ public extension ACPClient {
     }
 }
 
-struct SSHKeyBundle: Sendable {
+public struct SSHKeyBundle: Sendable {
     let privateKeyPEM: String
     let publicKeySSHLine: String
 }
