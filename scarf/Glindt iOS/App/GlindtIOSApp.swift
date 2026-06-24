@@ -20,12 +20,14 @@ final class AppRootModel {
     enum State: Equatable {
         case loading
         case onboarding
+        case selection
         case connected(GlindtAppConfig)
 
         static func == (lhs: State, rhs: State) -> Bool {
             switch (lhs, rhs) {
             case (.loading, .loading): return true
             case (.onboarding, .onboarding): return true
+            case (.selection, .selection): return true
             case (.connected, .connected): return true
             default: return false
             }
@@ -34,7 +36,7 @@ final class AppRootModel {
 
     private(set) var state: State = .loading
 
-    private let store: any GlindtConfigStore
+    let store: any GlindtConfigStore
 
     init(store: any GlindtConfigStore) {
         self.store = store
@@ -43,6 +45,8 @@ final class AppRootModel {
     func load() async {
         if let config = try? await store.load() {
             state = .connected(config)
+        } else if let configs = try? await store.allConfigs(), !configs.isEmpty {
+            state = .selection
         } else {
             state = .onboarding
         }
@@ -53,9 +57,14 @@ final class AppRootModel {
         state = .connected(config)
     }
 
-    func disconnect() async {
-        try? await store.delete()
-        state = .onboarding
+    func switchServer(id: ServerID) async {
+        try? await store.setActive(id: id)
+        await load()
+    }
+
+    func logOut() async {
+        try? await store.unsetActive()
+        await load()
     }
 }
 
@@ -70,10 +79,30 @@ struct AppRootView: View {
             OnboardingView { config in
                 await model.connect(config: config)
             }
+        case .selection:
+            NavigationStack {
+                ServerListView(
+                    store: model.store,
+                    activeID: nil,
+                    onSelect: { id in
+                        await model.switchServer(id: id)
+                    },
+                    onDeleteActive: {
+                        await model.load()
+                    }
+                )
+            }
         case .connected(let config):
-            GlindtTabRoot(config: config, onDisconnect: {
-                Task { await model.disconnect() }
-            })
+            GlindtTabRoot(
+                config: config,
+                store: model.store,
+                onSwitchServer: { id in
+                    await model.switchServer(id: id)
+                },
+                onDisconnect: {
+                    Task { await model.logOut() }
+                }
+            )
         }
     }
 }
